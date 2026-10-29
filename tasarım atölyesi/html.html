@@ -1,0 +1,890 @@
+html
+<!DOCTYPE html>
+<html lang="tr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tasarım Atölyesi | Makine Tasarımı, CAD & CMM Kalite Kontrol</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            500: '#0066cc',
+                            600: '#0052a3',
+                            700: '#003d7a',
+                            accent: '#ff6b00',
+                            accentHover: '#e05e00',
+                        },
+                        darkBg: '#0b0f17',
+                        darkCard: '#151c28',
+                        darkBorder: '#232e42'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Font Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0b0f17;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ff6b00;
+        }
+        .grid-bg {
+            background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+        .light .grid-bg {
+            background-image: radial-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+        }
+    </style>
+</head>
+<body class="bg-darkBg text-slate-200 transition-colors duration-300 dark:bg-darkBg dark:text-slate-200 light:bg-slate-50 light:text-slate-800" id="body-root">
+
+    <!-- Header / Navigation -->
+    <header class="fixed w-full top-0 z-50 bg-darkBg/90 backdrop-blur-md border-b border-darkBorder transition-colors duration-300 header-bar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Logo -->
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-accent to-amber-600 flex items-center justify-center text-white shadow-lg shadow-brand-accent/20 group-hover:scale-105 transition-transform">
+                    <i class="fa-solid fa-cube text-xl"></i>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-xl font-bold tracking-tight text-white logo-text">TASARIM <span class="text-brand-accent">ATÖLYESİ</span></span>
+                    <span class="text-[10px] tracking-widest text-slate-400 font-semibold uppercase">Mühendislik & Çözümler</span>
+                </div>
+            </a>
+
+            <!-- Desktop Nav Links -->
+            <nav class="hidden md:flex items-center gap-8 text-sm font-medium">
+                <a href="#hizmetler" class="hover:text-brand-accent transition-colors">Hizmetlerimiz</a>
+                <a href="#portfolyo" class="hover:text-brand-accent transition-colors">Projeler</a>
+                <a href="#hesaplayici" class="hover:text-brand-accent transition-colors">Teklif Hesapla</a>
+                <a href="#hakkimizda" class="hover:text-brand-accent transition-colors">Hakkımızda</a>
+                <a href="#iletisim" class="hover:text-brand-accent transition-colors">İletişim</a>
+            </nav>
+
+            <!-- Actions -->
+            <div class="hidden md:flex items-center gap-4">
+                <button id="theme-toggle" class="p-2.5 rounded-xl border border-darkBorder bg-darkCard hover:bg-slate-800 text-slate-300 hover:text-white transition-colors" title="Tema Değiştir">
+                    <i class="fa-solid fa-sun text-amber-400 hidden dark:block"></i>
+                    <i class="fa-solid fa-moon text-slate-700 block dark:hidden"></i>
+                </button>
+                <a href="tel:05519963345" class="px-5 py-2.5 rounded-xl bg-brand-accent hover:bg-brand-accentHover text-white font-semibold text-sm transition-all shadow-lg shadow-brand-accent/25 flex items-center gap-2">
+                    <i class="fa-solid fa-phone"></i>
+                    <span>0551 996 33 45</span>
+                </a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <div class="flex items-center gap-3 md:hidden">
+                <button id="theme-toggle-mobile" class="p-2 rounded-lg border border-darkBorder bg-darkCard text-slate-300">
+                    <i class="fa-solid fa-sun text-amber-400 hidden dark:block"></i>
+                    <i class="fa-solid fa-moon text-slate-700 block dark:hidden"></i>
+                </button>
+                <button id="mobile-menu-btn" class="p-2 text-slate-300 hover:text-white focus:outline-none">
+                    <i class="fa-solid fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden bg-darkCard border-b border-darkBorder px-4 pt-2 pb-6 space-y-3">
+            <a href="#hizmetler" class="block py-2 text-slate-300 hover:text-brand-accent border-b border-slate-800">Hizmetlerimiz</a>
+            <a href="#portfolyo" class="block py-2 text-slate-300 hover:text-brand-accent border-b border-slate-800">Projeler</a>
+            <a href="#hesaplayici" class="block py-2 text-slate-300 hover:text-brand-accent border-b border-slate-800">Teklif Hesapla</a>
+            <a href="#hakkimizda" class="block py-2 text-slate-300 hover:text-brand-accent border-b border-slate-800">Hakkımızda</a>
+            <a href="#iletisim" class="block py-2 text-slate-300 hover:text-brand-accent">İletişim</a>
+            <a href="tel:05519963345" class="mt-4 w-full py-3 rounded-xl bg-brand-accent text-center text-white font-semibold flex items-center justify-center gap-2">
+                <i class="fa-solid fa-phone"></i>
+                <span>0551 996 33 45</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 md:pt-40 md:pb-32 overflow-hidden grid-bg">
+        <!-- Glow accents -->
+        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-brand-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+        <div class="absolute top-1/3 right-10 w-[300px] h-[300px] bg-brand-accent/10 rounded-full blur-[100px] pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <!-- Text Left -->
+                <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-brand-accent/30 bg-brand-accent/10 text-brand-accent text-xs font-semibold uppercase tracking-wider">
+                        <i class="fa-solid fa-microchip"></i>
+                        <span>Endüstriyel Tasarım & Mühendislik Hizmetleri</span>
+                    </div>
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-tight hero-title">
+                        Fikirlerinizi <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-accent via-amber-400 to-amber-500">Hassas Mühendislik</span> ile Gerçeğe Dönüştürün
+                    </h1>
+                    <p class="text-lg text-slate-400 max-w-2xl mx-auto lg:mx-0 font-normal leading-relaxed">
+                        SolidWorks 3D CAD modelleme, özel kaynak & montaj fikstür tasarımları, teknik resim ve CMM kalite kontrol raporlamasında endüstri standartlarında profesyonel çözümler sunuyoruz.
+                    </p>
+                    
+                    <div class="pt-4 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+                        <a href="#hesaplayici" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-brand-accent hover:bg-brand-accentHover text-white font-bold text-base transition-all shadow-lg shadow-brand-accent/30 hover:scale-[1.02] flex items-center justify-center gap-3">
+                            <i class="fa-solid fa-calculator"></i>
+                            <span>Anında Fiyat Teklifi Alın</span>
+                        </a>
+                        <a href="#portfolyo" class="w-full sm:w-auto px-8 py-4 rounded-xl border border-darkBorder bg-darkCard hover:bg-slate-800 text-white font-semibold text-base transition-all flex items-center justify-center gap-2">
+                            <span>Projelerimizi İnceleyin</span>
+                            <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </a>
+                    </div>
+
+                    <!-- Mini Highlights -->
+                    <div class="pt-8 border-t border-darkBorder grid grid-cols-3 gap-4 text-center lg:text-left">
+                        <div>
+                            <p class="text-2xl font-bold text-white">%99.8</p>
+                            <p class="text-xs text-slate-400 mt-1">Hassasiyet Toleransı</p>
+                        </div>
+                        <div>
+                            <p class="text-2xl font-bold text-white">500+</p>
+                            <p class="text-xs text-slate-400 mt-1">Tamamlanan Proje</p>
+                        </div>
+                        <div>
+                            <p class="text-2xl font-bold text-white">CMM</p>
+                            <p class="text-xs text-slate-400 mt-1">ISO Sertifikalı Kalite</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Graphic Right -->
+                <div class="lg:col-span-5 relative">
+                    <div class="relative mx-auto max-w-md lg:max-w-none">
+                        <!-- Simulated CAD Card -->
+                        <div class="bg-darkCard border border-darkBorder rounded-2xl p-6 shadow-2xl relative overflow-hidden group">
+                            <div class="flex items-center justify-between pb-4 border-b border-darkBorder">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-3 h-3 rounded-full bg-red-500 inline-block"></span>
+                                    <span class="w-3 h-3 rounded-full bg-amber-500 inline-block"></span>
+                                    <span class="w-3 h-3 rounded-full bg-green-500 inline-block"></span>
+                                </div>
+                                <span class="text-xs font-mono text-slate-400">SolidWorks 2024 - CAD Viewer</span>
+                            </div>
+
+                            <!-- Mock Interactive View Area -->
+                            <div class="my-6 h-64 bg-slate-900/80 rounded-xl border border-slate-800 flex flex-col items-center justify-center relative overflow-hidden group-hover:border-brand-accent/50 transition-colors">
+                                <i class="fa-solid fa-drafting-compass text-6xl text-brand-accent/80 animate-pulse mb-3"></i>
+                                <span class="text-xs font-mono text-slate-300">Hassas Fikstör Montajı v2.4</span>
+                                <span class="text-[10px] font-mono text-slate-500 mt-1">X: 240.0mm | Y: 180.5mm | Z: 95.2mm</span>
+                                
+                                <div class="absolute bottom-3 left-3 bg-darkBg/90 px-2.5 py-1 rounded text-[11px] font-mono text-emerald-400 border border-emerald-500/30">
+                                    <i class="fa-solid fa-check-circle mr-1"></i>CMM Doğrulandı
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-3 text-xs">
+                                <div class="bg-darkBg p-3 rounded-lg border border-darkBorder">
+                                    <span class="text-slate-500 block">Tasarım Standardı</span>
+                                    <span class="font-semibold text-slate-200">ISO 2768-mK</span>
+                                </div>
+                                <div class="bg-darkBg p-3 rounded-lg border border-darkBorder">
+                                    <span class="text-slate-500 block">Ölçüm Cihazı</span>
+                                    <span class="font-semibold text-slate-200">ZEISS CMM 0.001mm</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="hizmetler" class="py-24 bg-darkCard/50 border-y border-darkBorder relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-brand-accent text-sm font-bold tracking-wider uppercase">Uzmanlık Alanlarımız</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-2">Endüstriyel Hizmetlerimiz</h2>
+                <p class="text-slate-400 mt-4 text-base">Tasarım fikrinden nihai kalite kontrol ve teknik dokümantasyona kadar tüm süreçlerde yanınızdayız.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Service 1 -->
+                <div class="bg-darkCard border border-darkBorder p-8 rounded-2xl hover:border-brand-accent/50 hover:-translate-y-1 transition-all group">
+                    <div class="w-14 h-14 rounded-xl bg-brand-accent/10 text-brand-accent flex items-center justify-center text-2xl mb-6 group-hover:bg-brand-accent group-hover:text-white transition-colors">
+                        <i class="fa-solid fa-ruler-combined"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">Mekanik Teknik Resim</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                        Toleranslandırma (GD&T), imalat resimleri, montaj kılavuzları ve ISO standartlarına uygun eksiksiz teknik çizim paketleri.
+                    </p>
+                    <ul class="text-xs text-slate-400 space-y-2">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-accent"></i> ISO / DIN Standartları</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-accent"></i> GD&T Geometrik Toleranslar</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-accent"></i> Malzeme & Miktar Listeleri (BOM)</li>
+                    </ul>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="bg-darkCard border border-darkBorder p-8 rounded-2xl hover:border-brand-accent/50 hover:-translate-y-1 transition-all group">
+                    <div class="w-14 h-14 rounded-xl bg-brand-accent/10 text-brand-accent flex items-center justify-center text-2xl mb-6 group-hover:bg-brand-accent group-hover:text-white transition-colors">
+                        <i class="fa-solid fa-cubes"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">3D CAD Modelleme</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                        SolidWorks ile karmaşık makine parçaları, sac metal ürünler, döküm modelleri ve parametrik 3D tasarım hizmetleri.
+                    </p>
+                    <ul class="text-xs text-slate-400 space-y-2">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-accent"></i> SolidWorks Profesyonel Modelleme</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-accent"></i> Sac Metal & Kaynaklı İmalat</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-accent"></i> Tersine Mühendislik (Reverse Eng.)</li>
+                    </ul>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="bg-darkCard border border-darkBorder p-8 rounded-2xl hover:border-brand-accent/50 hover:-translate-y-1 transition-all group">
+                    <div class="w-14 h-14 rounded-xl bg-brand-accent/10 text-brand-accent flex items-center justify-center text-2xl mb-6 group-hover:bg-brand-accent group-hover:text-white transition-colors">
+                        <i class="fa-solid fa-gears"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">Özel Aparat & Fikstür</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                        Kaynak, montaj, talaşlı imalat ve kontrol süreçleriniz için verimlilik artıran özel mekanik aparatı ve fikstür tasarımları.
+                    </p>
+                    <ul class="text-xs text-slate-400 space-y-2">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-accent"></i> Kaynak & Montaj Fikstürleri</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-accent"></i> Pnömatik & Poka-Yoke Çözümler</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-accent"></i> Ergonomik İmalat Ekipmanları</li>
+                    </ul>
+                </div>
+
+                <!-- Service 4 -->
+                <div class="bg-darkCard border border-darkBorder p-8 rounded-2xl hover:border-brand-accent/50 hover:-translate-y-1 transition-all group">
+                    <div class="w-14 h-14 rounded-xl bg-brand-accent/10 text-brand-accent flex items-center justify-center text-2xl mb-6 group-hover:bg-brand-accent group-hover:text-white transition-colors">
+                        <i class="fa-solid fa-bullseye"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">CMM Kalite Kontrol</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                        Mikron seviyesinde hassasiyetle 3D CMM ölçüm kontrolü, numune doğrulama ve detaylı kalite raporlama hizmeti.
+                    </p>
+                    <ul class="text-xs text-slate-400 space-y-2">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-accent"></i> 3D CMM Koordinat Ölçümü</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-accent"></i> İlk Numune Onay Raporu (FAI)</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-accent"></i> Yüzey & Form Tolerans Kontrolü</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Portfolio Section -->
+    <section id="portfolyo" class="py-24 grid-bg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+                <div>
+                    <span class="text-brand-accent text-sm font-bold tracking-wider uppercase">Referans Çalışmalar</span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-2">Öne Çıkan Projelerimiz</h2>
+                </div>
+                <!-- Filter Buttons -->
+                <div class="flex flex-wrap gap-2 mt-6 md:mt-0" id="portfolio-filters">
+                    <button data-filter="all" class="px-4 py-2 rounded-xl text-xs font-semibold border border-brand-accent bg-brand-accent text-white transition-all filter-btn">Hepsini Göster</button>
+                    <button data-filter="cad" class="px-4 py-2 rounded-xl text-xs font-semibold border border-darkBorder bg-darkCard text-slate-400 hover:text-white transition-all filter-btn">3D CAD Modelleme</button>
+                    <button data-filter="fikstur" class="px-4 py-2 rounded-xl text-xs font-semibold border border-darkBorder bg-darkCard text-slate-400 hover:text-white transition-all filter-btn">Aparat & Fikstür</button>
+                    <button data-filter="cmm" class="px-4 py-2 rounded-xl text-xs font-semibold border border-darkBorder bg-darkCard text-slate-400 hover:text-white transition-all filter-btn">CMM Kalite</button>
+                </div>
+            </div>
+
+            <!-- Portfolio Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="portfolio-grid">
+                
+                <!-- Project 1 -->
+                <div class="portfolio-item cad bg-darkCard border border-darkBorder rounded-2xl overflow-hidden group hover:border-slate-600 transition-all">
+                    <div class="h-52 bg-slate-900 relative flex items-center justify-center p-6 border-b border-darkBorder">
+                        <i class="fa-solid fa-gears text-7xl text-slate-700 group-hover:scale-110 group-hover:text-brand-accent transition-all duration-300"></i>
+                        <span class="absolute top-4 left-4 bg-brand-500/20 text-brand-500 text-[10px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wider">3D CAD</span>
+                    </div>
+                    <div class="p-6">
+                        <h4 class="text-lg font-bold text-white group-hover:text-brand-accent transition-colors">Otomotiv Redüktör Gövdesi</h4>
+                        <p class="text-slate-400 text-xs mt-2 leading-relaxed">SolidWorks ortamında karmaşık döküm ve işleme detaylarına sahip 5 vitesli şanzıman gövdesi tasarımı.</p>
+                        <div class="mt-4 pt-4 border-t border-darkBorder flex items-center justify-between text-xs text-slate-500">
+                            <span>Müşteri: Otomotiv Yan Sanayi</span>
+                            <span class="text-slate-300 font-mono">ISO 2768</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="portfolio-item fikstur bg-darkCard border border-darkBorder rounded-2xl overflow-hidden group hover:border-slate-600 transition-all">
+                    <div class="h-52 bg-slate-900 relative flex items-center justify-center p-6 border-b border-darkBorder">
+                        <i class="fa-solid fa-industry text-7xl text-slate-700 group-hover:scale-110 group-hover:text-brand-accent transition-all duration-300"></i>
+                        <span class="absolute top-4 left-4 bg-amber-500/20 text-amber-500 text-[10px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wider">Aparat / Fikstür</span>
+                    </div>
+                    <div class="p-6">
+                        <h4 class="text-lg font-bold text-white group-hover:text-brand-accent transition-colors">Pnömatik Robot Kaynak Fikstürü</h4>
+                        <p class="text-slate-400 text-xs mt-2 leading-relaxed">Şasi kaynağı için 12 noktalı pnömatik sıkıştırmalı yüksek hassasiyetli kaynak fikstürü tasarımı.</p>
+                        <div class="mt-4 pt-4 border-t border-darkBorder flex items-center justify-between text-xs text-slate-500">
+                            <span>Müşteri: Savunma Sanayi</span>
+                            <span class="text-slate-300 font-mono">Hassasiyet: 0.02mm</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="portfolio-item cmm bg-darkCard border border-darkBorder rounded-2xl overflow-hidden group hover:border-slate-600 transition-all">
+                    <div class="h-52 bg-slate-900 relative flex items-center justify-center p-6 border-b border-darkBorder">
+                        <i class="fa-solid fa-microscope text-7xl text-slate-700 group-hover:scale-110 group-hover:text-brand-accent transition-all duration-300"></i>
+                        <span class="absolute top-4 left-4 bg-emerald-500/20 text-emerald-500 text-[10px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wider">CMM Kontrol</span>
+                    </div>
+                    <div class="p-6">
+                        <h4 class="text-lg font-bold text-white group-hover:text-brand-accent transition-colors">Havacılık Kanat Bağlantı Elemanı</h4>
+                        <p class="text-slate-400 text-xs mt-2 leading-relaxed">Titanyum alaşımlı kritik havacılık parçasının ZEISS CMM cihazı ile 3D koordinat ölçümü ve FAI raporlanması.</p>
+                        <div class="mt-4 pt-4 border-t border-darkBorder flex items-center justify-between text-xs text-slate-500">
+                            <span>Müşteri: Havacılık Firması</span>
+                            <span class="text-slate-300 font-mono">Tolerans: ±0.005mm</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 4 -->
+                <div class="portfolio-item fikstur bg-darkCard border border-darkBorder rounded-2xl overflow-hidden group hover:border-slate-600 transition-all">
+                    <div class="h-52 bg-slate-900 relative flex items-center justify-center p-6 border-b border-darkBorder">
+                        <i class="fa-solid fa-screwdriver-wrench text-7xl text-slate-700 group-hover:scale-110 group-hover:text-brand-accent transition-all duration-300"></i>
+                        <span class="absolute top-4 left-4 bg-amber-500/20 text-amber-500 text-[10px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wider">Aparat / Fikstür</span>
+                    </div>
+                    <div class="p-6">
+                        <h4 class="text-lg font-bold text-white group-hover:text-brand-accent transition-colors">Manuel Montaj Aparatı</h4>
+                        <p class="text-slate-400 text-xs mt-2 leading-relaxed">Beyaz eşya sektörü için ergonomik, hata önleyici (Poka-Yoke) mekanik montaj istasyon tasarımı.</p>
+                        <div class="mt-4 pt-4 border-t border-darkBorder flex items-center justify-between text-xs text-slate-500">
+                            <span>Müşteri: Dayanıklı Tüketim</span>
+                            <span class="text-slate-300 font-mono">Poka-Yoke Entegre</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 5 -->
+                <div class="portfolio-item cad bg-darkCard border border-darkBorder rounded-2xl overflow-hidden group hover:border-slate-600 transition-all">
+                    <div class="h-52 bg-slate-900 relative flex items-center justify-center p-6 border-b border-darkBorder">
+                        <i class="fa-solid fa-cube text-7xl text-slate-700 group-hover:scale-110 group-hover:text-brand-accent transition-all duration-300"></i>
+                        <span class="absolute top-4 left-4 bg-brand-500/20 text-brand-500 text-[10px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wider">3D CAD</span>
+                    </div>
+                    <div class="p-6">
+                        <h4 class="text-lg font-bold text-white group-hover:text-brand-accent transition-colors">Plastik Enjeksiyon Kalıp Tasarımı</h4>
+                        <p class="text-slate-400 text-xs mt-2 leading-relaxed">Elektronik cihaz muhafazası için maça/dişi maça ayrımı ve soğutma kanalları optimizasyonlu kalıp tasarımı.</p>
+                        <div class="mt-4 pt-4 border-t border-darkBorder flex items-center justify-between text-xs text-slate-500">
+                            <span>Müşteri: Elektronik İmalat</span>
+                            <span class="text-slate-300 font-mono">Moldflow Analizli</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 6 -->
+                <div class="portfolio-item cmm bg-darkCard border border-darkBorder rounded-2xl overflow-hidden group hover:border-slate-600 transition-all">
+                    <div class="h-52 bg-slate-900 relative flex items-center justify-center p-6 border-b border-darkBorder">
+                        <i class="fa-solid fa-chart-line text-7xl text-slate-700 group-hover:scale-110 group-hover:text-brand-accent transition-all duration-300"></i>
+                        <span class="absolute top-4 left-4 bg-emerald-500/20 text-emerald-500 text-[10px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wider">CMM Kontrol</span>
+                    </div>
+                    <div class="p-6">
+                        <h4 class="text-lg font-bold text-white group-hover:text-brand-accent transition-colors">Seri İmalat Kontrol Fikstürü Raporu</h4>
+                        <p class="text-slate-400 text-xs mt-2 leading-relaxed">Seri imalat hattında kullanılan 50 adet ölçüm mastarının CMM doğrulaması ve periyodik kalibrasyon raporlaması.</p>
+                        <div class="mt-4 pt-4 border-t border-darkBorder flex items-center justify-between text-xs text-slate-500">
+                            <span>Müşteri: Makine İmalat</span>
+                            <span class="text-slate-300 font-mono">50 Adet Mastar</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Cost Calculator Section -->
+    <section id="hesaplayici" class="py-24 bg-darkCard/30 border-y border-darkBorder relative">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <span class="text-brand-accent text-sm font-bold tracking-wider uppercase">Şeffaf Maliyet Yönetimi</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-2">İnteraktif Proje Tahmin Hesaplayıcısı</h2>
+                <p class="text-slate-400 mt-3 text-sm">İhtiyacınıza uygun parametreleri seçerek projenizin tahmini bütçe ve süre aralığını anında hesaplayın.</p>
+            </div>
+
+            <div class="bg-darkCard border border-darkBorder rounded-3xl p-6 sm:p-10 shadow-2xl">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <!-- Controls Column -->
+                    <div class="lg:col-span-7 space-y-6">
+                        <!-- Service Type Select -->
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-2 uppercase tracking-wider">1. Hizmet Türünü Seçin</label>
+                            <select id="calc-service" class="w-full bg-darkBg border border-darkBorder rounded-xl p-3.5 text-white text-sm focus:border-brand-accent focus:outline-none transition-colors">
+                                <option value="cad" data-price="2500" data-days="3">3D CAD Modelleme & Tasarım</option>
+                                <option value="drafting" data-price="1500" data-days="2">Mekanik Teknik Resim Çizimi</option>
+                                <option value="fixture" data-price="4500" data-days="5">Özel Fikstür & Aparat Tasarımı</option>
+                                <option value="cmm" data-price="2000" data-days="2">CMM Kalite Kontrol & Raporlama</option>
+                            </select>
+                        </div>
+
+                        <!-- Complexity Level -->
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-2 uppercase tracking-wider">2. Karmaşıklık Derecesi</label>
+                            <div class="grid grid-cols-3 gap-3">
+                                <button type="button" class="calc-complexity-btn active p-3 rounded-xl border border-brand-accent bg-brand-accent/10 text-brand-accent text-xs font-bold transition-all text-center" data-factor="1" data-day-add="0">
+                                    Standart
+                                </button>
+                                <button type="button" class="calc-complexity-btn p-3 rounded-xl border border-darkBorder bg-darkBg text-slate-400 hover:text-white text-xs font-bold transition-all text-center" data-factor="1.5" data-day-add="2">
+                                    Orta
+                                </button>
+                                <button type="button" class="calc-complexity-btn p-3 rounded-xl border border-darkBorder bg-darkBg text-slate-400 hover:text-white text-xs font-bold transition-all text-center" data-factor="2.2" data-day-add="4">
+                                    Yüksek / Karmaşık
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Quantity Slider -->
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <label class="text-xs font-semibold text-slate-300 uppercase tracking-wider">3. Parça / Montaj Sayısı</label>
+                                <span id="calc-qty-val" class="text-brand-accent font-mono font-bold text-sm">1 Parça</span>
+                            </div>
+                            <input type="range" id="calc-qty" min="1" max="20" value="1" class="w-full accent-brand-accent cursor-pointer bg-darkBg">
+                        </div>
+
+                        <!-- Addons Checkboxes -->
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-2 uppercase tracking-wider">4. Ekstra Hizmetler</label>
+                            <div class="space-y-2.5">
+                                <label class="flex items-center gap-3 p-3 rounded-xl border border-darkBorder bg-darkBg cursor-pointer hover:border-slate-700 transition-colors">
+                                    <input type="checkbox" id="addon-express" class="rounded accent-brand-accent w-4 h-4" data-price="1500" data-day-sub="2">
+                                    <span class="text-xs text-slate-300 flex-1">Acil / Hızlı Teslimat Hizmeti (+1.500 ₺)</span>
+                                </label>
+                                <label class="flex items-center gap-3 p-3 rounded-xl border border-darkBorder bg-darkBg cursor-pointer hover:border-slate-700 transition-colors">
+                                    <input type="checkbox" id="addon-step" class="rounded accent-brand-accent w-4 h-4" data-price="500">
+                                    <span class="text-xs text-slate-300 flex-1">STEP / IGES Nötr CAD Formatları Paketi (+500 ₺)</span>
+                                </label>
+                                <label class="flex items-center gap-3 p-3 rounded-xl border border-darkBorder bg-darkBg cursor-pointer hover:border-slate-700 transition-colors">
+                                    <input type="checkbox" id="addon-report" class="rounded accent-brand-accent w-4 h-4" data-price="1000">
+                                    <span class="text-xs text-slate-300 flex-1">ISO Uyumlu Detaylı CMM / Tolerans Analiz Raporu (+1.000 ₺)</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Output Summary Column -->
+                    <div class="lg:col-span-5 flex flex-col justify-between bg-darkBg border border-darkBorder rounded-2xl p-6 sm:p-8">
+                        <div>
+                            <span class="text-xs font-mono text-slate-500 uppercase tracking-widest block mb-1">Tahmini Proje Bütçesi</span>
+                            <div class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight flex items-baseline gap-2">
+                                <span id="calc-total-price">2.500</span>
+                                <span class="text-xl text-brand-accent font-semibold">₺</span>
+                            </div>
+                            <p class="text-[11px] text-slate-500 mt-1">*Tahmini fiyat olup nihai teklif teknik inceleme sonrası netleşir.</p>
+
+                            <div class="mt-8 space-y-4 border-t border-darkBorder pt-6">
+                                <div class="flex items-center justify-between text-sm">
+                                    <span class="text-slate-400">Tahmini Teslim Süresi:</span>
+                                    <span id="calc-delivery-time" class="font-semibold text-white font-mono">3 İş Günü</span>
+                                </div>
+                                <div class="flex items-center justify-between text-sm">
+                                    <span class="text-slate-400">Revizyon Hakkı:</span>
+                                    <span class="font-semibold text-emerald-400">Sınırsız (İlk 14 Gün)</span>
+                                </div>
+                                <div class="flex items-center justify-between text-sm">
+                                    <span class="text-slate-400">Gizlilik Sözleşmesi (NDA):</span>
+                                    <span class="font-semibold text-white">Dahil</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-8">
+                            <button id="send-calc-quote" class="w-full py-4 rounded-xl bg-brand-accent hover:bg-brand-accentHover text-white font-bold text-sm transition-all shadow-lg shadow-brand-accent/20 flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-paper-plane"></i>
+                                <span>Bu Hesaplamayla Teklif İsteyin</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us Section -->
+    <section id="hakkimizda" class="py-24 grid-bg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-6">
+                    <span class="text-brand-accent text-sm font-bold tracking-wider uppercase">Neden Tasarım Atölyesi?</span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white leading-tight">Mühendislikte Hassasiyet ve Endüstriyel Güven</h2>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Tasarım Atölyesi olarak, sanayi ve üretim sektörünün yüksek tolerans ve hassasiyet gereksinimlerini çok iyi biliyoruz. Fikir aşamasından seri üretime kadar olan süreçte, zaman ve maliyet kayıplarını minimuma indiren yenilikçi mühendislik çözümleri sunuyoruz.
+                    </p>
+
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-lg bg-brand-accent/10 text-brand-accent flex items-center justify-center text-lg flex-shrink-0 mt-1">
+                                <i class="fa-solid fa-award"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-base font-bold text-white">Yüksek Standartlarda Toleranslandırma</h4>
+                                <p class="text-slate-400 text-xs mt-1">ISO ve DIN standartlarına tam uyumlu teknik resim ve modelleme pratikleri.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-lg bg-brand-accent/10 text-brand-accent flex items-center justify-center text-lg flex-shrink-0 mt-1">
+                                <i class="fa-solid fa-clock-rotate-left"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-base font-bold text-white">Zamanında Teslim Garantisi</h4>
+                                <p class="text-slate-400 text-xs mt-1">Proje süreçlerini şeffaf bir şekilde yöneterek belirlenen tarihlere sadık kalıyoruz.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-lg bg-brand-accent/10 text-brand-accent flex items-center justify-center text-lg flex-shrink-0 mt-1">
+                                <i class="fa-solid fa-shield-halved"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-base font-bold text-white">Tam Gizlilik & NDA</h4>
+                                <p class="text-slate-400 text-xs mt-1">Proje verileriniz ve fikri mülkiyetiniz yüksek güvenlik standartları altında korunur.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Card Box -->
+                <div class="bg-darkCard border border-darkBorder rounded-3xl p-8 relative overflow-hidden">
+                    <div class="text-center space-y-6">
+                        <div class="w-20 h-20 mx-auto rounded-2xl bg-gradient-to-tr from-brand-accent to-amber-500 flex items-center justify-center text-white text-3xl shadow-xl shadow-brand-accent/20">
+                            <i class="fa-solid fa-headset"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white">Doğrudan Mühendislik Desteği</h3>
+                        <p class="text-slate-400 text-sm max-w-sm mx-auto">
+                            Projeleriniz hakkında teknik bilgi almak veya özel gereksinimlerinizi görüşmek için hemen bizi arayın.
+                        </p>
+                        <div class="pt-4">
+                            <a href="tel:05519963345" class="inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-slate-900 border border-brand-accent/50 text-brand-accent hover:text-white hover:bg-brand-accent font-bold text-lg transition-all group">
+                                <i class="fa-solid fa-phone text-xl group-hover:scale-110 transition-transform"></i>
+                                <span>0551 996 33 45</span>
+                            </a>
+                        </div>
+                        <span class="text-xs text-slate-500 block">Hafta içi: 08:30 - 18:30 | Cumartesi: 09:00 - 14:00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact & Inquiry Form Section -->
+    <section id="iletisim" class="py-24 bg-darkCard/50 border-t border-darkBorder relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                
+                <!-- Info Column -->
+                <div class="lg:col-span-5 space-y-8">
+                    <div>
+                        <span class="text-brand-accent text-sm font-bold tracking-wider uppercase">İletişim & Teklif</span>
+                        <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-2">Bize Ulaşın</h2>
+                        <p class="text-slate-400 mt-4 text-sm leading-relaxed">
+                            Projeniz için çizim, CAD modelleme veya CMM kontrol taleplerinizi formu doldurarak bize iletebilirsiniz. En kısa sürede dönüş sağlayacağız.
+                        </p>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-darkCard border border-darkBorder text-brand-accent flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-phone"></i>
+                            </div>
+                            <div>
+                                <span class="text-xs text-slate-500 block">Telefon / WhatsApp</span>
+                                <a href="tel:05519963345" class="text-lg font-bold text-white hover:text-brand-accent transition-colors">0551 996 33 45</a>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-darkCard border border-darkBorder text-brand-accent flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-envelope"></i>
+                            </div>
+                            <div>
+                                <span class="text-xs text-slate-500 block">E-Posta Adresi</span>
+                                <a href="mailto:info@tasarimatolyesi.com" class="text-base font-bold text-white hover:text-brand-accent transition-colors">info@tasarimatolyesi.com</a>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-darkCard border border-darkBorder text-brand-accent flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <div>
+                                <span class="text-xs text-slate-500 block">Ofis / Atölye</span>
+                                <p class="text-sm font-semibold text-white">Organize Sanayi Bölgesi, Teknoloji Blv. No:14, Türkiye</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Column -->
+                <div class="lg:col-span-7">
+                    <div class="bg-darkCard border border-darkBorder rounded-3xl p-8 sm:p-10 shadow-2xl">
+                        <form id="contact-form" class="space-y-5">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-300 mb-2">Ad Soyad *</label>
+                                    <input type="text" id="form-name" required placeholder="Ahmet Yılmaz" class="w-full bg-darkBg border border-darkBorder rounded-xl p-3.5 text-white text-sm focus:border-brand-accent focus:outline-none transition-colors">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-300 mb-2">Firma / Şirket Adı</label>
+                                    <input type="text" id="form-company" placeholder="ABC Makine A.Ş." class="w-full bg-darkBg border border-darkBorder rounded-xl p-3.5 text-white text-sm focus:border-brand-accent focus:outline-none transition-colors">
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-300 mb-2">E-Posta *</label>
+                                    <input type="email" id="form-email" required placeholder="ahmet@firma.com" class="w-full bg-darkBg border border-darkBorder rounded-xl p-3.5 text-white text-sm focus:border-brand-accent focus:outline-none transition-colors">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-300 mb-2">Telefon *</label>
+                                    <input type="tel" id="form-phone" required placeholder="05XX XXX XX XX" class="w-full bg-darkBg border border-darkBorder rounded-xl p-3.5 text-white text-sm focus:border-brand-accent focus:outline-none transition-colors">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-300 mb-2">İlgilendiğiniz Hizmet</label>
+                                <select id="form-service" class="w-full bg-darkBg border border-darkBorder rounded-xl p-3.5 text-white text-sm focus:border-brand-accent focus:outline-none transition-colors">
+                                    <option value="Tüm Hizmetler">Genel Bilgi / Birden Fazla Hizmet</option>
+                                    <option value="3D CAD Modelleme">3D CAD Modelleme</option>
+                                    <option value="Mekanik Teknik Resim">Mekanik Teknik Resim</option>
+                                    <option value="Özel Fikstür & Aparat">Özel Fikstür & Aparat Tasarımı</option>
+                                    <option value="CMM Kalite Kontrol">CMM Kalite Kontrol</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-300 mb-2">Proje Detayları & Açıklama *</label>
+                                <textarea id="form-message" rows="4" required placeholder="Projenizin kapsamı, parça boyutları veya özel taleplerinizi buraya yazabilirsiniz..." class="w-full bg-darkBg border border-darkBorder rounded-xl p-3.5 text-white text-sm focus:border-brand-accent focus:outline-none transition-colors resize-none"></textarea>
+                            </div>
+
+                            <button type="submit" class="w-full py-4 rounded-xl bg-brand-accent hover:bg-brand-accentHover text-white font-bold text-base transition-all shadow-lg shadow-brand-accent/25 flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-paper-plane"></i>
+                                <span>Talep Gönder</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-darkBg border-t border-darkBorder py-12 text-slate-500 text-xs">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-brand-accent flex items-center justify-center text-white">
+                    <i class="fa-solid fa-cube text-sm"></i>
+                </div>
+                <span class="font-bold text-white text-base">TASARIM ATÖLYESİ</span>
+            </div>
+            
+            <p>© 2026 Tasarım Atölyesi. Tüm hakları saklıdır. Endüstriyel CAD & Kalite Kontrol Çözümleri.</p>
+
+            <div class="flex items-center gap-4 text-base text-slate-400">
+                <a href="#" class="hover:text-brand-accent transition-colors"><i class="fa-brands fa-linkedin"></i></a>
+                <a href="#" class="hover:text-brand-accent transition-colors"><i class="fa-brands fa-instagram"></i></a>
+                <a href="tel:05519963345" class="hover:text-brand-accent transition-colors"><i class="fa-solid fa-phone"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Notification Box -->
+    <div id="toast" class="fixed bottom-6 right-6 bg-emerald-600 text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 translate-y-32 opacity-0 transition-all duration-300 z-50">
+        <i class="fa-solid fa-circle-check text-xl"></i>
+        <div>
+            <h5 class="font-bold text-sm" id="toast-title">Başarılı</h5>
+            <p class="text-xs text-emerald-100" id="toast-msg">Mesajınız başarıyla iletildi.</p>
+        </div>
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // DOM Elements
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const themeToggleBtns = [document.getElementById('theme-toggle'), document.getElementById('theme-toggle-mobile')];
+        const htmlTag = document.documentElement;
+        
+        // Mobile Menu Toggle
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Theme Toggle (Dark / Light)
+        themeToggleBtns.forEach(btn => {
+            if(!btn) return;
+            btn.addEventListener('click', () => {
+                if (htmlTag.classList.contains('dark')) {
+                    htmlTag.classList.remove('dark');
+                    htmlTag.classList.add('light');
+                } else {
+                    htmlTag.classList.remove('light');
+                    htmlTag.classList.add('dark');
+                }
+            });
+        });
+
+        // Interactive Portfolio Filter
+        const filterBtns = document.querySelectorAll('#portfolio-filters button');
+        const portfolioItems = document.querySelectorAll('.portfolio-item');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Update active button state
+                filterBtns.forEach(b => {
+                    b.classList.remove('bg-brand-accent', 'text-white', 'border-brand-accent');
+                    b.classList.add('bg-darkCard', 'text-slate-400', 'border-darkBorder');
+                });
+                btn.classList.remove('bg-darkCard', 'text-slate-400', 'border-darkBorder');
+                btn.classList.add('bg-brand-accent', 'text-white', 'border-brand-accent');
+
+                const filter = btn.getAttribute('data-filter');
+
+                portfolioItems.forEach(item => {
+                    if (filter === 'all' || item.classList.contains(filter)) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Interactive Calculator Logic
+        const calcService = document.getElementById('calc-service');
+        const calcQty = document.getElementById('calc-qty');
+        const calcQtyVal = document.getElementById('calc-qty-val');
+        const calcTotalPrice = document.getElementById('calc-total-price');
+        const calcDeliveryTime = document.getElementById('calc-delivery-time');
+        const complexityBtns = document.querySelectorAll('.calc-complexity-btn');
+
+        let selectedComplexityFactor = 1;
+        let selectedComplexityDays = 0;
+
+        // Complexity selection
+        complexityBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                complexityBtns.forEach(b => {
+                    b.classList.remove('active', 'border-brand-accent', 'bg-brand-accent/10', 'text-brand-accent');
+                    b.classList.add('border-darkBorder', 'bg-darkBg', 'text-slate-400');
+                });
+                btn.classList.add('active', 'border-brand-accent', 'bg-brand-accent/10', 'text-brand-accent');
+                btn.classList.remove('border-darkBorder', 'bg-darkBg', 'text-slate-400');
+
+                selectedComplexityFactor = parseFloat(btn.getAttribute('data-factor'));
+                selectedComplexityDays = parseInt(btn.getAttribute('data-day-add'));
+                updateCalculator();
+            });
+        });
+
+        function updateCalculator() {
+            const selectedOption = calcService.options[calcService.selectedIndex];
+            const basePrice = parseFloat(selectedOption.getAttribute('data-price'));
+            const baseDays = parseInt(selectedOption.getAttribute('data-days'));
+            const qty = parseInt(calcQty.value);
+
+            // Quantity Label Update
+            calcQtyVal.innerText = `${qty} Parça`;
+
+            // Calculate Subtotal
+            let total = basePrice * qty * selectedComplexityFactor;
+            let totalDays = baseDays + selectedComplexityDays + Math.floor((qty - 1) * 0.5);
+
+            // Addons calculation
+            const addonExpress = document.getElementById('addon-express');
+            const addonStep = document.getElementById('addon-step');
+            const addonReport = document.getElementById('addon-report');
+
+            if (addonExpress && addonExpress.checked) {
+                total += parseFloat(addonExpress.getAttribute('data-price'));
+                totalDays = Math.max(1, totalDays - 2);
+            }
+            if (addonStep && addonStep.checked) {
+                total += parseFloat(addonStep.getAttribute('data-price'));
+            }
+            if (addonReport && addonReport.checked) {
+                total += parseFloat(addonReport.getAttribute('data-price'));
+            }
+
+            // Format & Display Total
+            calcTotalPrice.innerText = Math.round(total).toLocaleString('tr-TR');
+            calcDeliveryTime.innerText = `${totalDays} İş Günü`;
+        }
+
+        // Event listeners for calculator
+        if(calcService) calcService.addEventListener('change', updateCalculator);
+        if(calcQty) calcQty.addEventListener('input', updateCalculator);
+        document.querySelectorAll('#addon-express, #addon-step, #addon-report').forEach(chk => {
+            chk.addEventListener('change', updateCalculator);
+        });
+
+        // Transfer calculator details to contact form
+        const sendCalcBtn = document.getElementById('send-calc-quote');
+        if (sendCalcBtn) {
+            sendCalcBtn.addEventListener('click', () => {
+                const serviceName = calcService.options[calcService.selectedIndex].text;
+                const total = calcTotalPrice.innerText;
+                const days = calcDeliveryTime.innerText;
+                const qty = calcQty.value;
+
+                const formMessage = document.getElementById('form-message');
+                if (formMessage) {
+                    formMessage.value = `[Hesaplama Teklifi Talebi]\nHizmet: ${serviceName}\nParça Sayısı: ${qty}\nTahmini Bütçe: ${total} ₺\nTahmini Teslimat: ${days}\n\nLütfen bu detaylara göre resmi teklif hazırlayınız.`;
+                }
+
+                // Smooth scroll to contact section
+                document.getElementById('iletisim').scrollIntoView({ behavior: 'smooth' });
+            });
+        }
+
+        // Contact Form Handling (Toast Display)
+        const contactForm = document.getElementById('contact-form');
+        const toast = document.getElementById('toast');
+
+        if (contactForm) {
+            contactForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                // Show Toast
+                toast.classList.remove('translate-y-32', 'opacity-0');
+                toast.classList.add('translate-y-0', 'opacity-100');
+
+                // Reset Form
+                contactForm.reset();
+
+                // Hide Toast after 4 seconds
+                setTimeout(() => {
+                    toast.classList.remove('translate-y-0', 'opacity-100');
+                    toast.classList.add('translate-y-32', 'opacity-0');
+                }, 4000);
+            });
+        }
+
+        // Initialize calculator on page load
+        updateCalculator();
+    </script>
+</body>
+</html>
